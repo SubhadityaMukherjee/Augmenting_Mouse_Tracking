@@ -1,0 +1,16 @@
+sentence,type,correct,option1,option2
+The clown is drawing a cute pig.,test,1,test_clown_draw.jpg,test_smurf_draw.jpg
+The elephant is sitting on a nice couch.,test,2,test_woman_couch.jpg,test_elephant_couch.jpg
+The children are carrying a beautiful suitcase.,null-dis,1,kids-carry-suitcase-dis.jpg,kids-carry-basket-coll.jpg
+The children each are holding a big travel bag.,each-dis,1,kids-hold-bag-dis.jpg,kids-hold-present-coll.jpg
+The children  are pulling a cute sledge.,null-coll,2,kids-pull-toy car-dis.jpg,kids-pull-sledge-coll.jpg
+The people together are carrying a long tree.,together-coll,2,people-carry-lamp-dis.jpg,people-carry-treetrunk-coll.jpg
+The people are pulling a pretty train.,null-dis,1,people-pull-train-dis.jpg,people-pull-boat-coll.jpg
+The people each are pushing a heavy car.,each-dis,1,people-push-car-dis.jpg,people-push-wardrobe-coll.jpg
+The aliens are carrying a big ladder.,null-coll,2,aliens-carry-table-dis.jpg,aliens-carry-ladder-coll.jpg
+The aliens together are holding a nice table.,together-coll,2,aliens-hold-flag-dis.jpg,aliens-hold-table-coll.jpg
+The boy is holding a nice ball.,filler,2,filler_boy_sit_ball.jpg,filler_boy_hold_ball.jpg
+The clown is sitting on a pretty flower.,filler,1,filler_clown_sit_flower.jpg,filler_clown_hold_flower.jpg
+The dog is sitting on a children's ball.,filler,2,filler_dog_hold_ball.jpg,filler_dog_sit_ball.jpg
+The elephants are holding two small branches.,filler,1,filler-elephant-hold-branch-coll.jpg,filler-elephant-hold-branch-dis.jpg
+The elephants are pushing two big barrels.,filler,2,filler-elephant-push-barrel-dis.jpg,filler-elephant-push-barrel-coll.jpg
