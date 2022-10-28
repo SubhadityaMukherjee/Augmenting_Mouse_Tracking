@@ -1,11 +1,9 @@
-from random import random
-from secrets import choice
-from tkinter import N
 import pandas as pd
 import os
 import pyautogui as pg
 import PySimpleGUI as sg
 from PIL import Image, ImageTk
+import time
 
 # Handling the Data
 file_name = "./data/data_map.csv"
@@ -57,10 +55,14 @@ def load_image(path, window, key):
     except:
         print(f"Unable to open {path}!")
 
+def get_mouse_position(x,y):
+    pos = pg.position()
+    x.append(pos[0])
+    y.append(pos[1])
 
 question_no = 0
 # Create the window
-window = sg.Window("Mouse Tracking", layout, element_justification='c')
+window = sg.Window("Mouse Tracking", layout, element_justification="c")
 
 user_results_dict = {}
 
@@ -68,13 +70,20 @@ event, values = window.read()
 # window['-CHOICE-'].update(df[name_of_query_column].values[question_no])
 window["-INIT-"].update(visible=True)
 window["st"].update(visible=True)
-center_screen = (pg.size()[0]/2 , pg.size()[1])
+center_screen = (pg.size()[0] / 2, pg.size()[1])
 if event == "st":
 
     # Create an event loop
     while True:
         event, values = window.read()
+        # PYautoGUI loop
+        # Start tracking curves
+        x,y = [],[]
+
+        # Move the cursor to the bottom center
         pg.moveTo(center_screen)
+        get_mouse_position(x,y)
+
         window["-INIT-"].update(visible=False)
         window["st"].update(visible=False)
 
@@ -83,6 +92,8 @@ if event == "st":
         window["-IMAGE2-"].update(visible=True)
         window["-OPTION1-"].update(visible=True)
         window["-OPTION2-"].update(visible=True)
+
+        get_mouse_position(x,y)
         chosen_q = df[name_of_query_column].values[question_no][0]
         window["-CHOICE-"].update(chosen_q)
         # image = Image.open(f"./downloaded_cards/{file_name}.jpg") #I prefer /
@@ -95,16 +106,22 @@ if event == "st":
         load_image(
             df[names_of_option_image_columns[1]].values[question_no], window, "-IMAGE2-"
         )
+        for _ in range(10):
+            get_mouse_position(x,y)
         if event == "-OPTION1-":
             chosen = 1
         elif event == "-OPTION2-":
             chosen = 2
 
+        for _ in range(10):
+            get_mouse_position(x,y)
         try:
             user_results_dict[chosen_q] = {
                 "correct_answer": df[correct_response_column].values[question_no],
                 "chosen": chosen,
                 "correct": df[correct_response_column].values[question_no] == chosen,
+                "mouse_x" : x,
+                "mouse_y" : y,
             }
 
             question_no += 1
