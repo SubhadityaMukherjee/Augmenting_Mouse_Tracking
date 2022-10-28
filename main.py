@@ -55,8 +55,10 @@ def load_image(path, window, key):
     except:
         print(f"Unable to open {path}!")
 
-def get_mouse_position(x,y):
-    pos = pg.position()
+def get_mouse_position(x,y, window):
+    # pos = pg.position()
+    pos = None
+    pos = window.mouse_location()
     x.append(pos[0])
     y.append(pos[1])
 
@@ -71,50 +73,53 @@ event, values = window.read()
 window["-INIT-"].update(visible=True)
 window["st"].update(visible=True)
 center_screen = (pg.size()[0] / 2, pg.size()[1])
+
+x,y = [],[]
+chosen = None
 if event == "st":
 
     # Create an event loop
     while True:
+        get_mouse_position(x,y, window)
         event, values = window.read()
         # PYautoGUI loop
         # Start tracking curves
-        x,y = [],[]
 
         # Move the cursor to the bottom center
         pg.moveTo(center_screen)
-        get_mouse_position(x,y)
 
-        window["-INIT-"].update(visible=False)
-        window["st"].update(visible=False)
+        while chosen not in [1,2]:
+            window["-INIT-"].update(visible=False)
+            window["st"].update(visible=False)
 
-        window["-CHOICE-"].update(visible=True)
-        window["-IMAGE1-"].update(visible=True)
-        window["-IMAGE2-"].update(visible=True)
-        window["-OPTION1-"].update(visible=True)
-        window["-OPTION2-"].update(visible=True)
+            window["-CHOICE-"].update(visible=True)
+            window["-IMAGE1-"].update(visible=True)
+            window["-IMAGE2-"].update(visible=True)
+            window["-OPTION1-"].update(visible=True)
+            window["-OPTION2-"].update(visible=True)
 
-        get_mouse_position(x,y)
-        chosen_q = df[name_of_query_column].values[question_no][0]
-        window["-CHOICE-"].update(chosen_q)
-        # image = Image.open(f"./downloaded_cards/{file_name}.jpg") #I prefer /
-        # window["myimg"].update(
-        # data = ImageTk.PhotoImage(file_image)
-        # ) #update the myimg key
-        load_image(
-            df[names_of_option_image_columns[0]].values[question_no], window, "-IMAGE1-"
-        )
-        load_image(
-            df[names_of_option_image_columns[1]].values[question_no], window, "-IMAGE2-"
-        )
-        for _ in range(10):
-            get_mouse_position(x,y)
-        if event == "-OPTION1-":
-            chosen = 1
-        elif event == "-OPTION2-":
-            chosen = 2
-
-        for _ in range(10):
-            get_mouse_position(x,y)
+            get_mouse_position(x,y, window)
+            chosen_q = df[name_of_query_column].values[question_no][0]
+            window["-CHOICE-"].update(chosen_q)
+            # image = Image.open(f"./downloaded_cards/{file_name}.jpg") #I prefer /
+            # window["myimg"].update(
+            # data = ImageTk.PhotoImage(file_image)
+            # ) #update the myimg key
+            load_image(
+                df[names_of_option_image_columns[0]].values[question_no], window, "-IMAGE1-"
+            )
+            load_image(
+                df[names_of_option_image_columns[1]].values[question_no], window, "-IMAGE2-"
+            )
+            get_mouse_position(x,y, window)
+            if event == "-OPTION1-":
+                chosen = 1
+            elif event == "-OPTION2-":
+                chosen = 2
+            get_mouse_position(x,y, window)
+            if event in ["OK", "st"]:
+                get_mouse_position(x,y, window)
+                break
         try:
             user_results_dict[chosen_q] = {
                 "correct_answer": df[correct_response_column].values[question_no],
@@ -125,6 +130,7 @@ if event == "st":
             }
 
             question_no += 1
+            chosen = None
         except:
             pass
         print(user_results_dict)
